@@ -1,421 +1,520 @@
-{
-  "_type": "export",
-  "__export_format": 4,
-  "__export_date": "2026-08-23T00:00:00.000Z",
-  "__export_source": "shopfeel-api.local",
-  "resources": [
-    {
-      "_id": "wrk_shopfeel",
-      "parentId": null,
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "name": "Shopfeel API",
-      "description": "API compartilhada pelo painel web administrativo e pelo aplicativo mobile.",
-      "scope": "collection",
-      "_type": "workspace"
-    },
-    {
-      "_id": "env_shopfeel_base",
-      "parentId": "wrk_shopfeel",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "name": "Base Environment",
-      "data": {
-        "base_url": "http://localhost:3000",
-        "token": "",
-        "admin_token": "",
-        "product_id": "1",
-        "mood_id": "1",
-        "photo_url": "/uploads/cole-o-caminho-retornado-no-upload.jpg",
-        "photo_path": "C:/caminho/para/foto.jpg",
-        "user_email": "user@example.com",
-        "user_password": "password123",
-        "admin_email": "admin@admin.com",
-        "admin_password": ""
-      },
-      "dataPropertyOrder": null,
-      "color": null,
-      "isPrivate": false,
-      "metaSortKey": 0,
-      "_type": "environment"
-    },
-    {
-      "_id": "jar_shopfeel",
-      "parentId": "wrk_shopfeel",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "name": "Default Jar",
-      "cookies": [],
-      "_type": "cookie_jar"
-    },
-    {
-      "_id": "fld_mobile",
-      "parentId": "wrk_shopfeel",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "name": "Mobile - Usuário comum",
-      "description": "Endpoints consumidos pelo aplicativo mobile.",
-      "environment": {},
-      "environmentPropertyOrder": null,
-      "metaSortKey": -3000,
-      "_type": "request_group"
-    },
-    {
-      "_id": "fld_profile",
-      "parentId": "wrk_shopfeel",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "name": "Perfil e Favoritos",
-      "description": "Endpoints autenticados do usuário mobile.",
-      "environment": {},
-      "environmentPropertyOrder": null,
-      "metaSortKey": -2000,
-      "_type": "request_group"
-    },
-    {
-      "_id": "fld_admin",
-      "parentId": "wrk_shopfeel",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "name": "Painel Admin - Web",
-      "description": "Endpoints exclusivos para usuários com access_level ADMIN.",
-      "environment": {},
-      "environmentPropertyOrder": null,
-      "metaSortKey": -1000,
-      "_type": "request_group"
-    },
-    {
-      "_id": "req_health",
-      "parentId": "wrk_shopfeel",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "url": "{{ _.base_url }}/health",
-      "name": "Health check",
-      "description": "Verifica se a API e o banco estão disponíveis.",
-      "method": "GET",
-      "body": {},
-      "parameters": [],
-      "headers": [],
-      "authentication": {},
-      "metaSortKey": -4000,
-      "isPrivate": false,
-      "settingStoreCookies": true,
-      "settingSendCookies": true,
-      "settingDisableRenderRequestBody": false,
-      "settingEncodeUrl": true,
-      "settingRebuildPath": true,
-      "settingFollowRedirects": "global",
-      "_type": "request"
-    },
-    {
-      "_id": "req_register",
-      "parentId": "fld_mobile",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "url": "{{ _.base_url }}/api/auth/register",
-      "name": "Cadastrar usuário",
-      "description": "Cria um usuário comum e retorna JWT.",
-      "method": "POST",
-      "body": {
-        "mimeType": "application/json",
-        "text": "{\n  \"name\": \"Usuário Shopfeel\",\n  \"email\": \"{{ _.user_email }}\",\n  \"password\": \"{{ _.user_password }}\"\n}"
-      },
-      "parameters": [],
-      "headers": [{ "name": "Content-Type", "value": "application/json" }],
-      "authentication": {},
-      "metaSortKey": -3000,
-      "_type": "request"
-    },
-    {
-      "_id": "req_login_user",
-      "parentId": "fld_mobile",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "url": "{{ _.base_url }}/api/auth/login",
-      "name": "Login - usuário mobile",
-      "description": "Copie o token retornado para a variável token do ambiente.",
-      "method": "POST",
-      "body": {
-        "mimeType": "application/json",
-        "text": "{\n  \"email\": \"{{ _.user_email }}\",\n  \"password\": \"{{ _.user_password }}\"\n}"
-      },
-      "parameters": [],
-      "headers": [{ "name": "Content-Type", "value": "application/json" }],
-      "authentication": {},
-      "metaSortKey": -2900,
-      "_type": "request"
-    },
-    {
-      "_id": "req_moods",
-      "parentId": "fld_mobile",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "url": "{{ _.base_url }}/api/mobile/moods",
-      "name": "Listar humores",
-      "description": "Lista os humores disponíveis no aplicativo.",
-      "method": "GET",
-      "body": {},
-      "parameters": [],
-      "headers": [],
-      "authentication": {},
-      "metaSortKey": -2800,
-      "_type": "request"
-    },
-    {
-      "_id": "req_products",
-      "parentId": "fld_mobile",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "url": "{{ _.base_url }}/api/mobile/products",
-      "name": "Listar produtos",
-      "description": "Lista produtos ativos com paginação e busca opcional.",
-      "method": "GET",
-      "body": {},
-      "parameters": [
-        { "name": "page", "value": "1", "disabled": false },
-        { "name": "limit", "value": "20", "disabled": false },
-        { "name": "search", "value": "", "disabled": true }
-      ],
-      "headers": [],
-      "authentication": {},
-      "metaSortKey": -2700,
-      "_type": "request"
-    },
-    {
-      "_id": "req_recommendations",
-      "parentId": "fld_mobile",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "url": "{{ _.base_url }}/api/mobile/recommendations/{{ _.mood_id }}",
-      "name": "Recomendações por humor",
-      "description": "Lista produtos ativos associados ao humor selecionado.",
-      "method": "GET",
-      "body": {},
-      "parameters": [],
-      "headers": [],
-      "authentication": {},
-      "metaSortKey": -2600,
-      "_type": "request"
-    },
-    {
-      "_id": "req_me",
-      "parentId": "fld_profile",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "url": "{{ _.base_url }}/api/me",
-      "name": "Consultar meu perfil",
-      "description": "Requer a variável token preenchida.",
-      "method": "GET",
-      "body": {},
-      "parameters": [],
-      "headers": [],
-      "authentication": { "type": "bearer", "token": "{{ _.token }}" },
-      "metaSortKey": -2000,
-      "_type": "request"
-    },
-    {
-      "_id": "req_update_me",
-      "parentId": "fld_profile",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "url": "{{ _.base_url }}/api/me",
-      "name": "Atualizar meu nome",
-      "method": "PATCH",
-      "body": {
-        "mimeType": "application/json",
-        "text": "{\n  \"name\": \"Novo nome\"\n}"
-      },
-      "parameters": [],
-      "headers": [{ "name": "Content-Type", "value": "application/json" }],
-      "authentication": { "type": "bearer", "token": "{{ _.token }}" },
-      "metaSortKey": -1900,
-      "_type": "request"
-    },
-    {
-      "_id": "req_upload_photo",
-      "parentId": "fld_profile",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "url": "{{ _.base_url }}/api/me/photo",
-      "name": "Enviar foto do perfil",
-      "description": "Selecione um arquivo JPEG, PNG ou WebP e ajuste photo_path.",
-      "method": "POST",
-      "body": {
-        "mimeType": "multipart/form-data",
-        "params": [
-          { "id": "pair_photo", "name": "photo", "type": "file", "fileName": "{{ _.photo_path }}" }
-        ]
-      },
-      "parameters": [],
-      "headers": [],
-      "authentication": { "type": "bearer", "token": "{{ _.token }}" },
-      "metaSortKey": -1800,
-      "_type": "request"
-    },
-    {
-      "_id": "req_favorites_list",
-      "parentId": "fld_profile",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "url": "{{ _.base_url }}/api/me/favorites",
-      "name": "Listar favoritos",
-      "method": "GET",
-      "body": {},
-      "parameters": [],
-      "headers": [],
-      "authentication": { "type": "bearer", "token": "{{ _.token }}" },
-      "metaSortKey": -1700,
-      "_type": "request"
-    },
-    {
-      "_id": "req_photo_view",
-      "parentId": "fld_profile",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "url": "{{ _.base_url }}{{ _.photo_url }}",
-      "name": "Ver foto do usuário",
-      "description": "Copie o valor photo retornado por Enviar foto do perfil para photo_url. Esta rota é pública.",
-      "method": "GET",
-      "body": {},
-      "parameters": [],
-      "headers": [],
-      "authentication": {},
-      "metaSortKey": -1650,
-      "_type": "request"
-    },
-    {
-      "_id": "req_favorite_add",
-      "parentId": "fld_profile",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "url": "{{ _.base_url }}/api/me/favorites/{{ _.product_id }}",
-      "name": "Adicionar favorito",
-      "method": "POST",
-      "body": {},
-      "parameters": [],
-      "headers": [],
-      "authentication": { "type": "bearer", "token": "{{ _.token }}" },
-      "metaSortKey": -1600,
-      "_type": "request"
-    },
-    {
-      "_id": "req_favorite_remove",
-      "parentId": "fld_profile",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "url": "{{ _.base_url }}/api/me/favorites/{{ _.product_id }}",
-      "name": "Remover favorito",
-      "method": "DELETE",
-      "body": {},
-      "parameters": [],
-      "headers": [],
-      "authentication": { "type": "bearer", "token": "{{ _.token }}" },
-      "metaSortKey": -1500,
-      "_type": "request"
-    },
-    {
-      "_id": "req_login_admin",
-      "parentId": "fld_admin",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "url": "{{ _.base_url }}/api/auth/login",
-      "name": "Login - administrador",
-      "description": "Use a senha definida em ADMIN_PASSWORD no seed e copie o token para admin_token.",
-      "method": "POST",
-      "body": {
-        "mimeType": "application/json",
-        "text": "{\n  \"email\": \"{{ _.admin_email }}\",\n  \"password\": \"{{ _.admin_password }}\"\n}"
-      },
-      "parameters": [],
-      "headers": [{ "name": "Content-Type", "value": "application/json" }],
-      "authentication": {},
-      "metaSortKey": -1000,
-      "_type": "request"
-    },
-    {
-      "_id": "req_admin_customers",
-      "parentId": "fld_admin",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "url": "{{ _.base_url }}/api/admin/customers",
-      "name": "Listar clientes",
-      "method": "GET",
-      "body": {},
-      "parameters": [],
-      "headers": [],
-      "authentication": { "type": "bearer", "token": "{{ _.admin_token }}" },
-      "metaSortKey": -900,
-      "_type": "request"
-    },
-    {
-      "_id": "req_admin_product_create",
-      "parentId": "fld_admin",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "url": "{{ _.base_url }}/api/admin/products",
-      "name": "Criar produto",
-      "method": "POST",
-      "body": {
-        "mimeType": "application/json",
-        "text": "{\n  \"name\": \"Produto de exemplo\",\n  \"description\": \"Descrição do produto\",\n  \"price_cents\": 4990,\n  \"is_active\": 1\n}"
-      },
-      "parameters": [],
-      "headers": [{ "name": "Content-Type", "value": "application/json" }],
-      "authentication": { "type": "bearer", "token": "{{ _.admin_token }}" },
-      "metaSortKey": -800,
-      "_type": "request"
-    },
-    {
-      "_id": "req_admin_product_update",
-      "parentId": "fld_admin",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "url": "{{ _.base_url }}/api/admin/products/{{ _.product_id }}",
-      "name": "Atualizar produto",
-      "method": "PATCH",
-      "body": {
-        "mimeType": "application/json",
-        "text": "{\n  \"name\": \"Produto atualizado\",\n  \"price_cents\": 5990\n}"
-      },
-      "parameters": [],
-      "headers": [{ "name": "Content-Type", "value": "application/json" }],
-      "authentication": { "type": "bearer", "token": "{{ _.admin_token }}" },
-      "metaSortKey": -700,
-      "_type": "request"
-    },
-    {
-      "_id": "req_admin_product_delete",
-      "parentId": "fld_admin",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "url": "{{ _.base_url }}/api/admin/products/{{ _.product_id }}",
-      "name": "Desativar produto",
-      "description": "Desativação lógica do produto.",
-      "method": "DELETE",
-      "body": {},
-      "parameters": [],
-      "headers": [],
-      "authentication": { "type": "bearer", "token": "{{ _.admin_token }}" },
-      "metaSortKey": -600,
-      "_type": "request"
-    },
-    {
-      "_id": "req_admin_recommendation",
-      "parentId": "fld_admin",
-      "modified": 1755907200000,
-      "created": 1755907200000,
-      "url": "{{ _.base_url }}/api/admin/recommendations",
-      "name": "Associar produto a humor",
-      "method": "POST",
-      "body": {
-        "mimeType": "application/json",
-        "text": "{\n  \"product_id\": 1,\n  \"mood_id\": {{ _.mood_id }}\n}"
-      },
-      "parameters": [],
-      "headers": [{ "name": "Content-Type", "value": "application/json" }],
-      "authentication": { "type": "bearer", "token": "{{ _.admin_token }}" },
-      "metaSortKey": -500,
-      "_type": "request"
-    }
-  ]
-}
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: Shopfeel - Ana e Iza
+meta:
+  id: wrk_e7f9f0e6eb024f8285a83a9e439d8480
+  created: 1787512902220
+  modified: 1787512902220
+  description: ""
+collection:
+  - url: "{{ _.base_url }}/health"
+    name: Health check
+    meta:
+      id: req_2a65ae584f8f4c4d9ceb1767fac70e74
+      created: 1755907200000
+      modified: 1787513091830
+      isPrivate: false
+      description: Verifica se a API e o banco estão disponíveis.
+      sortKey: -4000
+    method: GET
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - name: Mobile - Usuário comum
+    meta:
+      id: fld_0af89abf3bac434db676c6804a2c060e
+      created: 1755907200000
+      modified: 1755907200000
+      sortKey: -3000
+      description: Endpoints consumidos pelo aplicativo mobile.
+    children:
+      - url: "{{ _.base_url }}/api/mobile/recommendations/1"
+        name: Recomendações por humor
+        meta:
+          id: req_1791cdaf6c514805b41db55fd10d4e3b
+          created: 1755907200000
+          modified: 1787515159286
+          isPrivate: false
+          description: Lista produtos ativos associados ao humor selecionado.
+          sortKey: -2600
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/mobile/moods"
+        name: Listar humores
+        meta:
+          id: req_85f9548d16224e5b98e6f681db72fee6
+          created: 1755907200000
+          modified: 1755907200000
+          isPrivate: false
+          description: Lista os humores disponíveis no aplicativo.
+          sortKey: -2800
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/auth/login"
+        name: Login - usuário mobile
+        meta:
+          id: req_a6f6d83778e9448889bdd6238bf7eea7
+          created: 1755907200000
+          modified: 1787513570246
+          isPrivate: false
+          description: Copie o token retornado para a variável token do ambiente.
+          sortKey: -2900
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "email": "nada@nada.com",
+              "password": "123Mudar!"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/mobile/products"
+        name: Listar produtos
+        meta:
+          id: req_c489bbbfb7a94755b0f50af206a8fe19
+          created: 1755907200000
+          modified: 1755907200000
+          isPrivate: false
+          description: Lista produtos ativos com paginação e busca opcional.
+          sortKey: -2700
+        method: GET
+        parameters:
+          - name: page
+            value: "1"
+            disabled: false
+          - name: limit
+            value: "20"
+            disabled: false
+          - name: search
+            value: ""
+            disabled: true
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/auth/register"
+        name: Cadastrar usuário
+        meta:
+          id: req_f5a5a16f7d6a4eafbb9819c5a6068f01
+          created: 1755907200000
+          modified: 1787513407822
+          isPrivate: false
+          description: Cria um usuário comum e retorna JWT.
+          sortKey: -3000
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "name": "Usuário Shopfeel",
+              "email": "nada@nada.com",
+              "password": "123Mudar!"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Perfil e Favoritos
+    meta:
+      id: fld_a9724f336c624acfb1fce8b93554c422
+      created: 1755907200000
+      modified: 1755907200000
+      sortKey: -2000
+      description: Endpoints autenticados do usuário mobile.
+    children:
+      - url: "{{ _.base_url }}/api/me"
+        name: Atualizar meu nome
+        meta:
+          id: req_8c17c50279fd429b8390238c324ff111
+          created: 1755907200000
+          modified: 1755907200000
+          isPrivate: false
+          description: ""
+          sortKey: -1900
+        method: PATCH
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "name": "Novo nome"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/me/favorites"
+        name: Listar favoritos
+        meta:
+          id: req_8f2a45347c7549679a2f6518943b3aca
+          created: 1755907200000
+          modified: 1755907200000
+          isPrivate: false
+          description: ""
+          sortKey: -1700
+        method: GET
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/me/photo"
+        name: Enviar foto do perfil
+        meta:
+          id: req_c1599bda4d1f4710bf2bae9dd72c50a9
+          created: 1755907200000
+          modified: 1787514212495
+          isPrivate: false
+          description: Selecione um arquivo JPEG, PNG ou WebP e ajuste photo_path.
+          sortKey: -1800
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: photo
+              fileName: C:\Users\Graziani Zanfolin\Downloads\imagens
+                comprimidas\evento-festa-junina.png
+              type: file
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_a6f6d83778e9448889bdd6238bf7eea7',
+            'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/me/favorites/{{ _.product_id }}"
+        name: Remover favorito
+        meta:
+          id: req_d0f7a25883d94a4d8cf62d2bcbdd194b
+          created: 1755907200000
+          modified: 1755907200000
+          isPrivate: false
+          description: ""
+          sortKey: -1500
+        method: DELETE
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/me/favorites/{{ _.product_id }}"
+        name: Adicionar favorito
+        meta:
+          id: req_f1399eaabcbe40d19a5efbbb38867956
+          created: 1755907200000
+          modified: 1755907200000
+          isPrivate: false
+          description: ""
+          sortKey: -1600
+        method: POST
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/me"
+        name: Consultar meu perfil
+        meta:
+          id: req_fcc0243963eb4735a210ea142f63e0ab
+          created: 1755907200000
+          modified: 1787514309289
+          isPrivate: false
+          description: Requer a variável token preenchida.
+          sortKey: -2000
+        method: GET
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_a6f6d83778e9448889bdd6238bf7eea7',
+            'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}{% response 'body',
+          'req_fcc0243963eb4735a210ea142f63e0ab',
+          'b64::JC5jdXN0b21lci5waG90bw==::46b', 'never', 60 %}"
+        name: Consultar Foto do Usuário
+        meta:
+          id: req_49f942e49b1c48e2945c26058468b742
+          created: 1787514289517
+          modified: 1787514357534
+          isPrivate: false
+          description: ""
+          sortKey: -1787514289517
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Painel Admin - Web
+    meta:
+      id: fld_fd1d9f3707d942ab9851ff7fb7c33398
+      created: 1755907200000
+      modified: 1755907200000
+      sortKey: -1000
+      description: Endpoints exclusivos para usuários com access_level ADMIN.
+    children:
+      - url: "{{ _.base_url }}/api/admin/products/{{ _.product_id }}"
+        name: Desativar produto
+        meta:
+          id: req_5e9b2e090ef743bb84b4af607c3ac306
+          created: 1755907200000
+          modified: 1755907200000
+          isPrivate: false
+          description: Desativação lógica do produto.
+          sortKey: -600
+        method: DELETE
+        authentication:
+          type: bearer
+          token: "{{ _.admin_token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/admin/recommendations"
+        name: Associar produto a humor
+        meta:
+          id: req_76b1cd38833943bb9f891779b2dda1a3
+          created: 1755907200000
+          modified: 1787515135176
+          isPrivate: false
+          description: ""
+          sortKey: -500
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "product_id": 1,
+              "mood_id": 1
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_c55405c694754f1db957ec6b568b6608',
+            'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/admin/customers"
+        name: Listar clientes
+        meta:
+          id: req_b136f80afb3948d1b87c67be944f22f2
+          created: 1755907200000
+          modified: 1787515099552
+          isPrivate: false
+          description: ""
+          sortKey: -900
+        method: GET
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_c55405c694754f1db957ec6b568b6608',
+            'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/auth/login"
+        name: Login - administrador
+        meta:
+          id: req_c55405c694754f1db957ec6b568b6608
+          created: 1755907200000
+          modified: 1787515026792
+          isPrivate: false
+          description: Use a senha definida em ADMIN_PASSWORD no seed e copie o token para
+            admin_token.
+          sortKey: -1000
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "email": "admin@admin.com",
+              "password": "123Mudar!"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/admin/products/{{ _.product_id }}"
+        name: Atualizar produto
+        meta:
+          id: req_cb58542061054af69a166c09b511272f
+          created: 1755907200000
+          modified: 1755907200000
+          isPrivate: false
+          description: ""
+          sortKey: -700
+        method: PATCH
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "name": "Produto atualizado",
+              "price_cents": 5990
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: "{{ _.admin_token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/admin/products"
+        name: Criar produto
+        meta:
+          id: req_f0e00571f5fe4c1cbd3bde1ac4c05fa1
+          created: 1755907200000
+          modified: 1787515104901
+          isPrivate: false
+          description: ""
+          sortKey: -800
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "name": "Produto de exemplo",
+              "description": "Descrição do produto",
+              "price_cents": 4990,
+              "is_active": 1
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_c55405c694754f1db957ec6b568b6608',
+            'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_4ab2b3b266e46f0a193443fb40544f531b24bea2
+    created: 1787512902227
+    modified: 1787512902227
+environments:
+  name: Base Environment
+  meta:
+    id: env_4ab2b3b266e46f0a193443fb40544f531b24bea2
+    created: 1787512902224
+    modified: 1787513131246
+    isPrivate: false
+  data:
+    base_url: localhost:3000

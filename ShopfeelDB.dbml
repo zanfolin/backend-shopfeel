@@ -1,0 +1,106 @@
+Project Shopfeel {
+  database_type: 'SQLite'
+  Note: 'Recomendação baseado em humor do usuário'
+}
+
+// Usuários e Autenticação
+Table customers {
+  id integer [pk, increment]
+  name text [not null, note: 'Usado como identificador no login']
+  email text [not null, unique, note: 'Usado como identificador no login']
+  email_code text [note: 'Atributo para verificação de email - usado na ativação do usuário']
+  email_verified integer [default: 0, note: '0 = não verificado, 1 = verificado']
+  photo text [note: 'URL da foto do usuário']
+  password text [note: 'Opcional se o login for apenas por nome/email']
+  access_level text [not null, default: 'USER', note: 'Níveis de acesso: USER, ADMIN', checks: "access_level IN ('USER', 'ADMIN')"]
+  created_at text [default: `CURRENT_TIMESTAMP`]
+  updated_at text [default: `CURRENT_TIMESTAMP`]
+
+  records {
+    1, 'Administrator', 'admin@admin.com', null, 1, 'admin123', 'ADMIN', `CURRENT_TIMESTAMP`, `CURRENT_TIMESTAMP`
+  }
+
+  indexes {
+     name [name: 'idx_customers_name']
+     email [name: 'idx_customers_email', note: 'Auxiliar para login e verificação de email']
+  }
+}
+
+// Catálogo e Favoritos
+Table products {
+  id integer [pk, increment]
+  name text [not null, note: 'Nome do produto comercial']
+  description text [note: 'Descrição detalhada do produto']
+  price numeric [not null , note: 'Preço do produto em formato decimal']
+  is_active integer [default: 1, note: '0 = inativo, 1 = ativo']
+  user_id integer [not null, ref: > customers.id, note: 'ID do usuário que adicionou o produto']
+  created_at text [default: `CURRENT_TIMESTAMP`]
+  updated_at text [default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+     name [name: 'idx_products_name']
+     price [name: 'idx_products_price', note: 'Auxiliar para ordenação pesquisa por preço ']
+     is_active [name: 'idx_products_is_active', note: 'Auxiliar para filtragem de produtos ativos']
+  }
+}
+
+Table favorite_products {
+  id integer [pk, increment]
+  customer_id integer [not null, ref: > customers.id]
+  product_id integer [not null, ref: > products.id]
+  created_at text [default: `CURRENT_TIMESTAMP`]
+  updated_at text [default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+     customer_id [name: 'idx_favorite_products_customer_id']
+     product_id [name: 'idx_favorite_products_product_id']
+  }
+}
+
+/**
+| Humor / Emoção | Cor Associada | O que transmite |
+| --- | --- | --- |
+| **Alegria / Otimismo** | **Amarelo** | Energia, calor, luz, expansividade e positividade. |
+| **Calma / Serenidade** | **Azul** | Paz, tranquilidade, segurança, relaxamento e, às vezes, melancolia (o famoso *"feeling blue"*). |
+| **Raiva / Paixão** | **Vermelho** | Intensidade, excitação, urgência, calor e força motriz. |
+| **Criatividade / Mistério** | **Roxo / Lilás** | Espiritualidade, introspecção, magia, luxo e imaginação. |
+| **Equilíbrio / Esperança** | **Verde** | Renovação, saúde, conexão com a natureza, frescor e harmonia. |
+| **Entusiasmo / Vitalidade** | **Laranja** | Sociabilidade, diversão, estímulo, coragem e extroversão. |
+| **Compaixão / Ternura** | **Rosa** | Delicadeza, afeto, doçura, empatia e inocência. |
+| **Tédio / Neutralidade** | **Cinza** | Indiferença, monotonia, estabilidade e ausência de emoção forte. |
+| **Luto / Poder** | **Preto** | Tristeza profunda, mas também elegância, sofisticação e mistério. |
+| **Paz / Clareza** | **Branco** | Pureza, calma absoluta, novos começos e, em excesso, sensação de vazio. |*/
+
+// Humores e Recomendações (Tela Inicial)
+Table moods {
+  id integer [pk, increment]
+  mood_name text [not null, unique, note: 'Nome do humor, usado como identificador']
+  associated_color text [not null]
+  description text [note: 'Descrição do que o humor transmite']
+  created_at text [default: `CURRENT_TIMESTAMP`]
+  updated_at text [default: `CURRENT_TIMESTAMP`]
+
+  records (id, mood_name, associated_color, description) {
+    1, 'Alegria / Otimismo', 'Amarelo', 'Energia, calor, luz, expansividade e positividade.'
+    2, 'Calma / Serenidade', 'Azul', null
+    3, 'Raiva / Paixão', 'Vermelho', null
+    4, 'Criatividade / Mistério', 'Roxo / Lilás', null
+    5, 'Equilíbrio / Esperança', 'Verde', null
+    6, 'Entusiasmo / Vitalidade', 'Laranja', null
+    7, 'Compaixão / Ternura', 'Rosa', null
+    8, 'Tédio / Neutralidade', 'Cinza', null
+    9, 'Luto / Poder', 'Preto', null
+    10, 'Paz / Clareza', 'Branco', null
+  }
+
+  indexes {
+     mood_name [name: 'idx_moods_mood_name', note: 'Auxiliar para pesquisa por humor']
+     associated_color [name: 'idx_moods_associated_color', note: 'Auxiliar para pesquisa por cor associada']
+  }
+}
+
+Table mood_product_recommendations {
+  id integer [pk, increment]
+  product_id integer [not null, ref: > products.id]
+  mood_id integer [not null, ref: > moods.id]
+}
